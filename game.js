@@ -24,7 +24,30 @@ let activeCard = null;
 let startX = 0;
 let startY = 0;
 
+function fitText(element) {
 
+    let fontSize = 1.5; // starting size in rem
+
+    element.style.fontSize = fontSize + "rem";
+
+
+    while (
+        element.scrollHeight > element.clientHeight ||
+        element.scrollWidth > element.clientWidth
+    ) {
+
+        fontSize -= 0.05;
+
+        element.style.fontSize = fontSize + "rem";
+
+
+        if(fontSize <= 0.6) {
+            break;
+        }
+
+    }
+
+}
 // Create squares
 
 statements.forEach(text => {
@@ -33,16 +56,16 @@ statements.forEach(text => {
 
     square.className = "square";
 
-    square.textContent = text;
+square.textContent = text;
+
+fitText(square);
 
 
     square.addEventListener("click", () => {
 
-        if(square.classList.contains("true") ||
-           square.classList.contains("false") ||
-           square.classList.contains("crown")){
-            return;
-        }
+square.addEventListener("click", () => {
+    openCard(square);
+});
 
         openCard(square);
 
@@ -198,36 +221,51 @@ function openCard(square){
 
 
 
-        if(dx > 100){
-
-            square.textContent =
-            "✓\n" + square.textContent;
-
-            square.classList.add("true");
-
-        }
+// Remove previous answer
+square.classList.remove(
+    "true",
+    "false",
+    "crown"
+);
 
 
-        else if(dx < -100){
-
-            square.textContent =
-            "✗\n" + square.textContent;
-
-            square.classList.add("false");
-
-        }
+// Remove old symbols
+square.textContent = square.textContent
+    .replace("✓\n","")
+    .replace("✗\n","")
+    .replace("👑\n","");
 
 
-        else if(dy < -100){
+// Apply new answer
 
-            square.textContent =
-            "👑\n" + square.textContent;
+if(dx > 100){
 
-            square.classList.add("crown");
+    square.textContent =
+    "✓\n" + square.textContent;
 
-        }
+    square.classList.add("true");
 
+}
 
+else if(dx < -100){
+
+    square.textContent =
+    "✗\n" + square.textContent;
+
+    square.classList.add("false");
+
+}
+
+else if(dy < -100){
+
+    square.textContent =
+    "👑\n" + square.textContent;
+
+    square.classList.add("crown");
+
+}
+
+fitText(square);
         closeCard(card);
 
 

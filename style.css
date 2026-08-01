@@ -35,7 +35,7 @@ html, body {
 
     padding: 20px;
 
-    max-width: 600px;
+    max-width:none;
     margin: auto;
 }
 
@@ -246,7 +246,20 @@ button.wrong {
 /* =========================
    TRUTHDOKU GRID
    ========================= */
+#game-area {
 
+    width:100%;
+    height:100%;
+
+    overflow:hidden;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    touch-action:none;
+
+}
 
 #game-container {
 
@@ -269,13 +282,11 @@ button.wrong {
 
     display:grid;
 
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 150px);
 
     gap:12px;
 
-    width:100%;
-
-    max-width:500px;
+    transform-origin:center center;
 
 }
 
@@ -283,9 +294,11 @@ button.wrong {
 
 /* Individual squares */
 
+
 .square {
 
-    aspect-ratio:1 / 1;
+    width:150px;
+    height:150px;
 
     background:#374151;
 
@@ -434,7 +447,7 @@ button.wrong {
 
     font-weight:800;
 
-    z-index:100;
+    z-index:1000;
 
     box-shadow:
     0 20px 50px rgba(0,0,0,0.5);
@@ -446,11 +459,11 @@ button.wrong {
 
 .square {
 
-    text-align:center;
+    overflow:hidden;
 
-    padding:10px;
+    line-height:1.15;
 
-    font-size:1rem;
+    word-break:break-word;
 
 }
 

@@ -404,3 +404,73 @@ button.wrong {
     color:#ef4444;
 
 }
+.expanded-card {
+
+    position:fixed;
+
+    top:50%;
+    left:50%;
+
+    transform:
+    translate(-50%,-50%)
+    scale(1);
+
+    width:80vw;
+    height:55vh;
+
+    background:#374151;
+
+    border-radius:30px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:30px;
+
+    text-align:center;
+
+    font-size:2rem;
+
+    font-weight:800;
+
+    z-index:100;
+
+    box-shadow:
+    0 20px 50px rgba(0,0,0,0.5);
+
+    touch-action:none;
+
+}
+
+
+.square {
+
+    text-align:center;
+
+    padding:10px;
+
+    font-size:1rem;
+
+}
+
+
+.square.true {
+
+    background:#16a34a;
+
+}
+
+
+.square.false {
+
+    background:#dc2626;
+
+}
+
+
+.square.crown {
+
+    background:#f59e0b;
+
+}

@@ -1,0 +1,245 @@
+/* =========================
+   TRUTHDOKU APP STYLE
+   ========================= */
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+
+    overflow: hidden;
+    overscroll-behavior: none;
+
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+
+    background: #111827;
+    color: white;
+}
+
+
+/* Main app container */
+
+#app,
+.container {
+    width: 100%;
+    height: 100dvh;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 20px;
+
+    max-width: 600px;
+    margin: auto;
+}
+
+
+/* Header */
+
+h1 {
+    text-align: center;
+
+    font-size: 2.2rem;
+    margin: 10px 0 5px;
+
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+
+.subtitle {
+    text-align: center;
+    opacity: 0.7;
+    margin-bottom: 20px;
+}
+
+
+
+/* Game panels */
+
+.card,
+.panel,
+.question-box {
+
+    background: #1f2937;
+
+    border-radius: 20px;
+
+    padding: 20px;
+
+    margin-bottom: 15px;
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,0.25);
+
+}
+
+
+/* Question text */
+
+.question {
+    font-size: 1.3rem;
+
+    text-align: center;
+
+    line-height: 1.4;
+
+    margin: 20px 0;
+}
+
+
+
+/* Buttons */
+
+button {
+
+    width: 100%;
+
+    padding: 16px;
+
+    margin: 8px 0;
+
+    border: none;
+
+    border-radius: 16px;
+
+    background: #3b82f6;
+
+    color: white;
+
+    font-size: 1.1rem;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: transform 0.1s, opacity 0.1s;
+
+}
+
+
+button:active {
+
+    transform: scale(0.96);
+
+    opacity: 0.8;
+
+}
+
+
+
+button.secondary {
+
+    background: #374151;
+
+}
+
+
+button.correct {
+
+    background: #16a34a;
+
+}
+
+
+button.wrong {
+
+    background: #dc2626;
+
+}
+
+
+
+/* Answer grid */
+
+.answers {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px;
+
+}
+
+
+/* Score area */
+
+.score {
+
+    text-align:center;
+
+    font-size:1.5rem;
+
+    font-weight:800;
+
+    margin-top:auto;
+
+}
+
+
+
+/* Bottom navigation style */
+
+.bottom-bar {
+
+    margin-top:auto;
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+
+.bottom-bar button {
+
+    flex:1;
+
+}
+
+
+
+/* Hide scrollbars */
+
+::-webkit-scrollbar {
+    display:none;
+}
+
+
+
+/* Mobile adjustments */
+
+@media (max-width:500px) {
+
+
+    #app,
+    .container {
+
+        padding:15px;
+
+    }
+
+
+    h1 {
+
+        font-size:1.8rem;
+
+    }
+
+
+    button {
+
+        padding:14px;
+
+        font-size:1rem;
+
+    }
+
+}

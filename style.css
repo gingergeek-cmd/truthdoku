@@ -243,3 +243,164 @@ button.wrong {
     }
 
 }
+/* =========================
+   TRUTHDOKU GRID
+   ========================= */
+
+
+#game-container {
+
+    position: relative;
+
+    width:100%;
+
+    flex:1;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+
+#grid {
+
+    display:grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap:12px;
+
+    width:100%;
+
+    max-width:500px;
+
+}
+
+
+
+/* Individual squares */
+
+.square {
+
+    aspect-ratio:1 / 1;
+
+    background:#374151;
+
+    border-radius:18px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:2.5rem;
+
+    font-weight:800;
+
+    box-shadow:
+        0 6px 15px rgba(0,0,0,0.25);
+
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+
+
+    touch-action:none;
+
+}
+
+
+/* Selected while dragging */
+
+.square.selected {
+
+    z-index:10;
+
+    transform:scale(1.15);
+
+    box-shadow:
+        0 15px 30px rgba(0,0,0,0.4);
+
+}
+
+
+
+/* Answers */
+
+.square.true {
+
+    background:#16a34a;
+
+}
+
+
+.square.false {
+
+    background:#dc2626;
+
+}
+
+
+
+/* Crown */
+
+.square.crown {
+
+    background:#f59e0b;
+
+}
+
+
+
+/* =========================
+   SWIPE PREVIEW
+   ========================= */
+
+
+#swipe-preview {
+
+    position:absolute;
+
+    top:50%;
+
+    left:50%;
+
+    transform:translate(-50%, -50%);
+
+    font-size:3rem;
+
+    font-weight:900;
+
+    pointer-events:none;
+
+    opacity:0;
+
+    transition:opacity 0.15s;
+
+}
+
+
+#swipe-preview.show {
+
+    opacity:1;
+
+}
+
+
+.true-preview {
+
+    color:#22c55e;
+
+}
+
+
+.false-preview {
+
+    color:#ef4444;
+
+}

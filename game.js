@@ -1,4 +1,6 @@
 const grid = document.getElementById("grid");
+const preview = document.getElementById("swipe-preview");
+const previewText = document.getElementById("preview-text");
 
 
 // create 16 squares
@@ -13,6 +15,7 @@ for(let i=0;i<16;i++){
 
 
     let startX=0;
+    let currentX=0;
 
 
     // Touch start
@@ -22,6 +25,50 @@ for(let i=0;i<16;i++){
         function(e){
 
             startX=e.touches[0].clientX;
+            currentX=startX;
+
+            square.classList.add("selected");
+
+        }
+    );
+
+
+    // Move square with finger
+
+    square.addEventListener(
+        "touchmove",
+        function(e){
+
+            currentX=e.touches[0].clientX;
+
+            let difference=currentX-startX;
+
+
+            square.style.transform =
+                `translateX(${difference}px) scale(1.15) rotate(${difference/15}deg)`;
+
+
+            // Show preview
+
+            if(difference>50){
+
+                previewText.textContent="TRUE ✓";
+                preview.className="show true-preview";
+
+            }
+
+            else if(difference<-50){
+
+                previewText.textContent="FALSE ✗";
+                preview.className="show false-preview";
+
+            }
+
+            else{
+
+                preview.className="";
+
+            }
 
         }
     );
@@ -33,14 +80,15 @@ for(let i=0;i<16;i++){
         "touchend",
         function(e){
 
-            let endX=e.changedTouches[0].clientX;
-
-            let difference=endX-startX;
+            let difference=currentX-startX;
 
 
-            // swipe right
+            square.classList.remove("selected");
 
-            if(difference>50){
+
+            // TRUE
+
+            if(difference>100){
 
                 square.dataset.state="true";
 
@@ -51,9 +99,9 @@ for(let i=0;i<16;i++){
             }
 
 
-            // swipe left
+            // FALSE
 
-            else if(difference<-50){
+            else if(difference<-100){
 
                 square.dataset.state="false";
 
@@ -62,6 +110,18 @@ for(let i=0;i<16;i++){
                 square.className="square false";
 
             }
+
+
+            // Cancel swipe
+
+            else{
+
+                square.style.transform="";
+
+            }
+
+
+            preview.className="";
 
         }
     );

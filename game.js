@@ -1,159 +1,187 @@
 const grid = document.getElementById("grid");
-const preview = document.getElementById("swipe-preview");
-const previewText = document.getElementById("preview-text");
 
+const statements = [
+    "The Earth is flat",
+    "A triangle has 3 sides",
+    "Water freezes at 0°C",
+    "The Sun is a planet",
+    "Cats are mammals",
+    "London is in France",
+    "2 + 2 = 4",
+    "Penguins can fly",
+    "The Moon orbits Earth",
+    "Fire is cold",
+    "A square has 4 sides",
+    "Fish live underwater",
+    "Jupiter is the largest planet",
+    "Humans breathe oxygen",
+    "The sky is green",
+    "5 x 5 = 25"
+];
 
-// create 16 squares
 
-for(let i=0;i<16;i++){
+let activeCard = null;
+let startX = 0;
+let startY = 0;
 
-    let square=document.createElement("div");
 
-    square.className="square";
 
-    square.dataset.state="unknown";
+// Create squares
 
+statements.forEach(text => {
 
-    let startX=0;
-    let currentX=0;
 
+    let square = document.createElement("div");
 
-    // Touch start
+    square.className = "square";
 
-    square.addEventListener(
-        "touchstart",
-        function(e){
+    square.textContent = text;
 
-            startX=e.touches[0].clientX;
-            currentX=startX;
 
-            square.classList.add("selected");
+    square.addEventListener("click", () => {
 
-        }
-    );
+        openCard(square);
 
-
-    // Move square with finger
-
-    square.addEventListener(
-        "touchmove",
-        function(e){
-
-            currentX=e.touches[0].clientX;
-
-            let difference=currentX-startX;
-
-
-            square.style.transform =
-                `translateX(${difference}px) scale(1.15) rotate(${difference/15}deg)`;
-
-
-            // Show preview
-
-            if(difference>50){
-
-                previewText.textContent="TRUE ✓";
-                preview.className="show true-preview";
-
-            }
-
-            else if(difference<-50){
-
-                previewText.textContent="FALSE ✗";
-                preview.className="show false-preview";
-
-            }
-
-            else{
-
-                preview.className="";
-
-            }
-
-        }
-    );
-
-
-    // Touch end
-
-    square.addEventListener(
-        "touchend",
-        function(e){
-
-            let difference=currentX-startX;
-
-
-            square.classList.remove("selected");
-
-
-            // TRUE
-
-            if(difference>100){
-
-                square.dataset.state="true";
-
-                square.textContent="✓";
-
-                square.className="square true";
-
-            }
-
-
-            // FALSE
-
-            else if(difference<-100){
-
-                square.dataset.state="false";
-
-                square.textContent="✗";
-
-                square.className="square false";
-
-            }
-
-
-            // Cancel swipe
-
-            else{
-
-                square.style.transform="";
-
-            }
-
-
-            preview.className="";
-
-        }
-    );
-
-
-
-    // double tap crown
-
-    square.addEventListener(
-        "dblclick",
-        function(){
-
-            if(square.textContent==="👑"){
-
-                square.textContent="";
-
-                square.classList.remove("crown");
-
-            }
-
-            else{
-
-                square.textContent="👑";
-
-                square.classList.add("crown");
-
-            }
-
-        }
-    );
+    });
 
 
     grid.appendChild(square);
+
+
+});
+
+
+
+
+
+function openCard(square){
+
+
+    if(activeCard) return;
+
+
+    square.style.visibility="hidden";
+
+
+    activeCard = square;
+
+
+    let card = document.createElement("div");
+
+    card.className="expanded-card";
+
+    card.textContent=square.textContent;
+
+
+    document.body.appendChild(card);
+
+
+
+    card.addEventListener("touchstart", e=>{
+
+        startX=e.touches[0].clientX;
+        startY=e.touches[0].clientY;
+
+    });
+
+
+
+    card.addEventListener("touchmove", e=>{
+
+
+        let x=e.touches[0].clientX;
+        let y=e.touches[0].clientY;
+
+
+        let dx=x-startX;
+        let dy=y-startY;
+
+
+        card.style.transform =
+        `
+        translate(${dx}px, ${dy}px)
+        rotate(${dx/12}deg)
+        scale(1.05)
+        `;
+
+
+
+        if(dx>50){
+
+            card.textContent="TRUE ✓\n\n"+square.textContent;
+
+        }
+
+        else if(dx<-50){
+
+            card.textContent="FALSE ✗\n\n"+square.textContent;
+
+        }
+
+        else if(dy<-50){
+
+            card.textContent="👑\n\n"+square.textContent;
+
+        }
+
+        else if(dy>50){
+
+            card.textContent=square.textContent;
+
+        }
+
+
+    });
+
+
+
+    card.addEventListener("touchend", e=>{
+
+
+        let dx=e.changedTouches[0].clientX-startX;
+        let dy=e.changedTouches[0].clientY-startY;
+
+
+
+        if(dx>100){
+
+            square.textContent="✓\n"+square.textContent;
+            square.classList.add("true");
+
+        }
+
+        else if(dx<-100){
+
+            square.textContent="✗\n"+square.textContent;
+            square.classList.add("false");
+
+        }
+
+        else if(dy<-100){
+
+            square.textContent="👑\n"+square.textContent;
+            square.classList.add("crown");
+
+        }
+
+
+
+        closeCard(card);
+
+
+    });
+
+
+}
+
+
+
+function closeCard(card){
+
+    card.remove();
+
+    activeCard.style.visibility="visible";
+
+    activeCard=null;
 
 }

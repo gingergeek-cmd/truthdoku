@@ -25,11 +25,9 @@ let startX = 0;
 let startY = 0;
 
 
-
 // Create squares
 
 statements.forEach(text => {
-
 
     let square = document.createElement("div");
 
@@ -40,13 +38,18 @@ statements.forEach(text => {
 
     square.addEventListener("click", () => {
 
+        if(square.classList.contains("true") ||
+           square.classList.contains("false") ||
+           square.classList.contains("crown")){
+            return;
+        }
+
         openCard(square);
 
     });
 
 
     grid.appendChild(square);
-
 
 });
 
@@ -60,73 +63,122 @@ function openCard(square){
     if(activeCard) return;
 
 
-    square.style.visibility="hidden";
-
+    square.style.visibility = "hidden";
 
     activeCard = square;
 
 
     let card = document.createElement("div");
 
-    card.className="expanded-card";
+    card.className = "expanded-card";
 
-    card.textContent=square.textContent;
+    card.textContent = square.textContent;
+
+
+    card.addEventListener("click", e => {
+        e.stopPropagation();
+    });
 
 
     document.body.appendChild(card);
 
 
 
-    card.addEventListener("touchstart", e=>{
+    card.addEventListener("touchstart", e => {
 
-        startX=e.touches[0].clientX;
-        startY=e.touches[0].clientY;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
 
     });
 
 
 
-    card.addEventListener("touchmove", e=>{
+
+    card.addEventListener("touchmove", e => {
 
 
-        let x=e.touches[0].clientX;
-        let y=e.touches[0].clientY;
+        let x = e.touches[0].clientX;
+        let y = e.touches[0].clientY;
 
 
-        let dx=x-startX;
-        let dy=y-startY;
+        let dx = x - startX;
+        let dy = y - startY;
 
+
+
+        // Card tilt
 
         card.style.transform =
         `
-        translate(${dx}px, ${dy}px)
-        rotate(${dx/12}deg)
+        translate(-50%, -50%)
+        rotate(${dx/15}deg)
         scale(1.05)
         `;
 
 
 
-        if(dx>50){
+        // TRUE preview
 
-            card.textContent="TRUE ✓\n\n"+square.textContent;
+        if(dx > 50){
 
-        }
+            card.classList.add("preview-true");
+            card.classList.remove(
+                "preview-false",
+                "preview-crown"
+            );
 
-        else if(dx<-50){
-
-            card.textContent="FALSE ✗\n\n"+square.textContent;
-
-        }
-
-        else if(dy<-50){
-
-            card.textContent="👑\n\n"+square.textContent;
+            card.textContent =
+            "TRUE ✓\n\n" + square.textContent;
 
         }
 
-        else if(dy>50){
 
-            card.textContent=square.textContent;
+
+        // FALSE preview
+
+        else if(dx < -50){
+
+            card.classList.add("preview-false");
+            card.classList.remove(
+                "preview-true",
+                "preview-crown"
+            );
+
+            card.textContent =
+            "FALSE ✗\n\n" + square.textContent;
+
+        }
+
+
+
+        // CROWN preview
+
+        else if(dy < -50){
+
+            card.classList.add("preview-crown");
+            card.classList.remove(
+                "preview-true",
+                "preview-false"
+            );
+
+            card.textContent =
+            "👑\n\n" + square.textContent;
+
+        }
+
+
+
+        // Cancel preview
+
+        else if(dy > 50){
+
+            card.classList.remove(
+                "preview-true",
+                "preview-false",
+                "preview-crown"
+            );
+
+            card.textContent = square.textContent;
 
         }
 
@@ -135,35 +187,45 @@ function openCard(square){
 
 
 
-    card.addEventListener("touchend", e=>{
-
-
-        let dx=e.changedTouches[0].clientX-startX;
-        let dy=e.changedTouches[0].clientY-startY;
 
 
 
-        if(dx>100){
+    card.addEventListener("touchend", e => {
 
-            square.textContent="✓\n"+square.textContent;
+
+        let dx = e.changedTouches[0].clientX - startX;
+        let dy = e.changedTouches[0].clientY - startY;
+
+
+
+        if(dx > 100){
+
+            square.textContent =
+            "✓\n" + square.textContent;
+
             square.classList.add("true");
 
         }
 
-        else if(dx<-100){
 
-            square.textContent="✗\n"+square.textContent;
+        else if(dx < -100){
+
+            square.textContent =
+            "✗\n" + square.textContent;
+
             square.classList.add("false");
 
         }
 
-        else if(dy<-100){
 
-            square.textContent="👑\n"+square.textContent;
+        else if(dy < -100){
+
+            square.textContent =
+            "👑\n" + square.textContent;
+
             square.classList.add("crown");
 
         }
-
 
 
         closeCard(card);
@@ -176,12 +238,16 @@ function openCard(square){
 
 
 
+
+
 function closeCard(card){
 
     card.remove();
 
-    activeCard.style.visibility="visible";
 
-    activeCard=null;
+    activeCard.style.visibility = "visible";
+
+
+    activeCard = null;
 
 }
